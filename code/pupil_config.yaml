@@ -1,0 +1,63 @@
+# pupil_config.yaml
+#
+# Example config for batch_pupil_analysis.py. Any of these keys can also
+# be passed as a CLI flag (e.g. `target_fs` <-> `--target-fs`); CLI flags
+# override whatever's set here.
+#
+#   python batch_pupil_analysis.py --config pupil_config.yaml
+
+# Where to find tracking CSVs and what to match
+input_dir: "/path/to/pupil_data/sub-waves04/video_preds"
+pattern: "*.csv"
+recursive: false
+
+# Where to write per-file *_pupil_measures.csv outputs + run_summary.csv
+output_dir: "./pupil_output"
+
+# Timing
+fs: 30              # native camera sampling rate (Hz)
+target_fs: 10        # downsampled output rate (Hz), e.g. to match imaging
+
+# Imaging start (LED flash frame) -- two ways to set this, can be combined:
+#   1. imaging_start_file: per-video values, for when LED timing varies
+#      (e.g. from manually checking each behavioural video). JSON object
+#      mapping {file_stem_or_filename: start_frame} -- see
+#      imaging_start_times.example.json for the format.
+#   2. imaging_start: a single default, used as a fallback for any file
+#      not listed in imaging_start_file (or as the only source if every
+#      video starts at the same frame).
+# A file with neither an entry nor a default fails for that file only
+# (logged in run_summary.csv) rather than silently using the wrong frame.
+imaging_start_file: null   # e.g. "imaging_start_times.json"
+imaging_start: 66
+
+# Baseline window for normalising pupil area, in seconds after imaging_start
+baseline_start_sec: 5
+baseline_end_sec: 10
+
+# Frame-to-frame diameter jump (px) above which a sample is flagged as a
+# tracking artifact and set to NaN
+diameter_jump_threshold: 10
+
+# Optional: NaN-out x/y on frames below this DLC likelihood (null/None = off)
+likelihood_threshold: null
+
+# Core pupil keypoints (name/alias -- resolved against whatever's actually
+# in each file, so partial matches like "left" also work if unambiguous)
+left: "leftpupil"
+right: "rightpupil"
+dorsal: "dorsalpupil"
+ventral: "ventralpupil"
+
+# Optional supplementary measures. If a file doesn't have these keypoints,
+# that one measure is skipped for that file (logged as a warning) rather
+# than failing the whole run.
+compute_vertical_aperture: true
+dorsal_eyelid: "dorsaleyelid"
+ventral_eyelid: "ventraleyelid"
+
+compute_nose_motion: true
+nose: "nose"
+
+# Save a diagnostic PNG (pupil area trace) per file under output_dir/plots/
+save_plots: false

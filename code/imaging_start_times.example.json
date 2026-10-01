@@ -1,0 +1,7 @@
+{
+  "_comment": "Keys are matched against the tracking CSV's file stem first (filename without extension), then the full filename. Values are the frame index where the imaging LED flash appears in that behavioural video. A '_comment' key like this one is ignored -- it just isn't a filename that will ever match.",
+
+  "sub-waves04_ses-3_task-rest_run-1_face": 66,
+  "sub-waves04_ses-3_task-rest_run-2_face": 82,
+  "sub-waves04_ses-4_task-rest_run-1_face": 54
+}

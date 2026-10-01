@@ -1,0 +1,40 @@
+# body_config.yaml
+#
+# Example config for batch_body_analysis.py. Any of these keys can also
+# be passed as a CLI flag (e.g. `back_low` <-> `--back-low`); CLI flags
+# override whatever's set here.
+#
+#   python batch_body_analysis.py --config body_config.yaml
+
+# Where to find tracking CSVs and what to match
+input_dir: "C:/Users/User/OneDrive/Documents/Calcium_Imaging/output/resting_waves_allen/behavioural_data/waves_body/video_preds/"
+pattern: "*body.csv"
+recursive: false
+
+# Where to write per-file *_body_measures.csv outputs + run_summary.csv
+output_dir: "C:/Users/User/OneDrive/Documents/Calcium_Imaging/output/resting_waves_allen/behavioural_data/body_output"
+
+# Sampling rate: fs is the tracking data's NATIVE frame rate (e.g. 30 fps,
+# same camera as pupil); target_fs is the rate every measure is
+# block-averaged down to (e.g. 10 Hz to match imaging). If your data is
+# already at one fixed rate with nothing to downsample, set fs == target_fs.
+fs: 30
+target_fs: 10
+
+# Optional: NaN-out x/y on frames below this DLC likelihood (null/None = off)
+likelihood_threshold: 0.9
+
+# Roles needed to compute the composite measures (back centroid, body
+# angle, body length, tail angle). Bodyparts are still auto-detected per
+# file; these are just the name/alias for each role, resolved against
+# whatever's actually present (partial matches work if unambiguous).
+back_low: "back_low"
+back_mid: "back_mid"
+hind_left: "hind_left"
+hind_right: "hind_right"
+tail_base: "tail_base"
+tail_mid: "tail_mid"
+
+# Save a diagnostic PNG (body angle / centroid / hindlimb displacement)
+# per file under output_dir/plots/
+save_plots: false
